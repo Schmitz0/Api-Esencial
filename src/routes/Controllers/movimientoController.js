@@ -279,25 +279,48 @@ router.post("/filters", async (req, res) => {
       },
     ];
 
+    // if (insumoNombre) {
+    //   includeClause.push({
+    //     model: Insumo,
+    //     where: {
+    //       nombre: {
+    //         [Op.like]: insumoNombre,
+    //       },
+    //     },
+    //   });
+    // }
+
     if (insumoNombre) {
-      includeClause.push({
-        model: Insumo,
-        where: {
-          nombre: {
-            [Op.like]: insumoNombre,
-          },
-        },
+      const movimientos = await Movimiento.findAll({
+        where: whereClause,
+        include: [
+          {
+            model: Insumo,
+            where: {
+              nombre: {
+                [Op.like]: insumoNombre,
+              },
+            },
+      }],
+        order: [["createdAt", "DESC"]],
+        limit: 10,
       });
+      res.json(movimientos);
+    } else {
+
+      const movimientos = await Movimiento.findAll({
+        where: whereClause,
+        include: [
+          {
+            model: Insumo,
+      }],
+        order: [["createdAt", "DESC"]],
+        limit: 10,
+      });
+      res.json(movimientos);
     }
 
-    const movimientos = await Movimiento.findAll({
-      where: whereClause,
-      include: includeClause,
-      order: [["createdAt", "DESC"]],
-      limit: 10,
-    });
 
-    res.json(movimientos);
   } catch (error) {
     console.error(error);
     res.status(500).send("Error al crear el remito");
