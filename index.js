@@ -13,6 +13,8 @@ conn.sync({ force: false }).then(() => {
   server.listen(PORT, () => {
     console.log(`Server running...`);
 
+    //
+
     const insumos = [
       {categoria:"Alimentos", nombre:"ACIDO ASCORBICO", precio:0, stock: 0, proveedor:"LG", unidad:"", descripcion:"-", imgUrl:"-"},
       {categoria:"Alimentos", nombre:"ACIDO CITRICO ANHIDRO", precio:0, stock: 0, proveedor:"LG", unidad:"-", descripcion:"-", imgUrl:"-"},
