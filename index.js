@@ -9,7 +9,7 @@ const { Usuario } = require("./src/db.js")
 const { crearReceta, json } = require("./src/routes/Controllers/utils.js")
 const { PORT } = process.env;
 
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: true }).then(() => {
   server.listen(PORT, () => {
     console.log(`Server running...`);
 
