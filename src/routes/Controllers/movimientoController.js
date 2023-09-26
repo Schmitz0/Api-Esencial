@@ -48,9 +48,11 @@ router.post("/estado", async (req, res) => {
         },
       ],
       order: [["createdAt", "DESC"]],
+      paranoid: false,
     });
 
     res.json(movimiento);
+
   } catch (error) {
     console.error(error);
     res.status(500).send("Error al obtener los movimientos");
@@ -236,18 +238,20 @@ router.post("/historial/control/:id", async (req, res) => {
 
 router.post("/filters", async (req, res) => {
   const { filters } = req.body;
-
+   
   try {
     const fecha1 = filters.fechaMin
-      ? moment(filters.fechaMin, "DD/MM/YYYY").format("YYYY-MM-DD")
-      : null;
-    const fecha2 = filters.fechaMax
-      ? moment(filters.fechaMax, "DD/MM/YYYY").format("YYYY-MM-DD")
-      : null;
+    ? moment(filters.fechaMin, "DD/MM/YYYY").format("YYYY-MM-DD 00:00:00")
+    : null;
+  
+  const fecha2 = filters.fechaMax
+    ? moment(filters.fechaMax, "DD/MM/YYYY").format("YYYY-MM-DD 23:59:59")
+    : null;
     const insumoNombre = filters.insumo ? filters.insumo : null;
-
+    console.log(fecha1,'mov');
+    
     const whereClause = {};
-
+    
     if (fecha1 && fecha2) {
       if (fecha1 === fecha2) {
         // Caso especial cuando fechaMin y fechaMax son iguales
@@ -269,27 +273,6 @@ router.post("/filters", async (req, res) => {
       };
     }
 
-    if (filters.estado) {
-      whereClause.estado = filters.estado;
-    }
-
-    const includeClause = [
-      {
-        model: MovimientoInsumo,
-      },
-    ];
-
-    // if (insumoNombre) {
-    //   includeClause.push({
-    //     model: Insumo,
-    //     where: {
-    //       nombre: {
-    //         [Op.like]: insumoNombre,
-    //       },
-    //     },
-    //   });
-    // }
-
     if (insumoNombre) {
       const movimientos = await Movimiento.findAll({
         where: whereClause,
@@ -303,8 +286,10 @@ router.post("/filters", async (req, res) => {
             },
       }],
         order: [["createdAt", "DESC"]],
+        paranoid: false,
         limit: 10,
       });
+
       res.json(movimientos);
     } else {
 
@@ -315,14 +300,15 @@ router.post("/filters", async (req, res) => {
             model: Insumo,
       }],
         order: [["createdAt", "DESC"]],
+        paranoid: false,
         limit: 10,
       });
+
       res.json(movimientos);
     }
 
 
   } catch (error) {
-    console.error(error);
     res.status(500).send("Error al crear el remito");
   }
 });

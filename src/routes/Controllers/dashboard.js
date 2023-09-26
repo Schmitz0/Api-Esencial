@@ -259,4 +259,31 @@ const result = Object.values(response.reduce((obj, movimiento) => {
 });
 
 
+
+router.get("/global", async (req, res) => {
+  try {
+    // remito y movimientos de un insumo
+    const insumo = await Insumo.findByPk(1,{
+      include: [
+        {
+          model: Movimiento,
+          required: false, // Cambia a true si deseas solo insumos con movimientos
+        },
+        {
+          model: Remito,
+          required: false, // Cambia a true si deseas solo insumos con remitos
+        },
+        
+      ],
+    })
+
+    res.json({ insumo });
+  } catch (error) {
+    res
+    .status(500)
+    .send("Error al obtener el valor total del inventario de insumos");
+  }
+});
+
+
 module.exports = router;

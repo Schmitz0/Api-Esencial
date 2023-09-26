@@ -60,7 +60,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const { userid } = req.headers;
-  // const name = req.get('name')
+
   const { insumos, proveedorId, numeroRemito, fecha } = req.body;
 
   try {
@@ -83,7 +83,7 @@ router.post('/', async (req, res) => {
     }
     res.json(remito);
   } catch (error) {
-    console.error(error);
+
     res.status(500).send('Error al crear el remito');
   }
 });
@@ -124,9 +124,11 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/filters', async (req, res) => {
   const { filters } = req.body;
+
   try {
     const fecha1 = moment(filters?.fechaMin, 'DD-MM-YYYY').format('YYYY-MM-DD');
     const fecha2 = moment(filters?.fechaMax, 'DD-MM-YYYY').format('YYYY-MM-DD');
+
 
     const remitos = await Remito.findAll({
       where: {
@@ -155,7 +157,7 @@ router.post('/filters', async (req, res) => {
     });
     res.json(remitos);
   } catch (error) {
-    console.error(error);
+
     res.status(500).send('Error al crear el remito');
   }
 });
