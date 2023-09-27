@@ -49,6 +49,7 @@ router.post("/estado", async (req, res) => {
       ],
       order: [["createdAt", "DESC"]],
       paranoid: false,
+      limit:20   ,
     });
 
     res.json(movimiento);
