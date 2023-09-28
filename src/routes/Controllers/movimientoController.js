@@ -38,6 +38,7 @@ router.post("/estado", async (req, res) => {
     const movimiento = await Movimiento.findAll({
       where: {
         estado,
+        tipoDeMovimiento:["Control de stock", "Movimiento de insumo", "Receta"]
       },
       include: [
         {
@@ -49,7 +50,7 @@ router.post("/estado", async (req, res) => {
       ],
       order: [["createdAt", "DESC"]],
       paranoid: false,
-      limit:20   ,
+      limit:10,
     });
 
     res.json(movimiento);
@@ -277,6 +278,7 @@ router.post("/filters", async (req, res) => {
     if (insumoNombre) {
       const movimientos = await Movimiento.findAll({
         where: whereClause,
+        tipoDeMovimiento:["Control de stock", "Movimiento de insumo", "Receta"],
         include: [
           {
             model: Insumo,
@@ -288,7 +290,6 @@ router.post("/filters", async (req, res) => {
       }],
         order: [["createdAt", "DESC"]],
         paranoid: false,
-        limit: 10,
       });
 
       res.json(movimientos);
@@ -296,13 +297,13 @@ router.post("/filters", async (req, res) => {
 
       const movimientos = await Movimiento.findAll({
         where: whereClause,
+        tipoDeMovimiento:["Control de stock", "Movimiento de insumo", "Receta"],
         include: [
           {
             model: Insumo,
       }],
         order: [["createdAt", "DESC"]],
         paranoid: false,
-        limit: 10,
       });
 
       res.json(movimientos);
