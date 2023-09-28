@@ -15,7 +15,7 @@ const generateToken = (user) => {
     email: user.email,
     role: user.role,
   }, process.env.SECRET || 'algosecreto',
-  {expiresIn:'8h'})
+  {expiresIn:'1h'})
 }
 
 async function crearReceta(nombre, insumos) {
